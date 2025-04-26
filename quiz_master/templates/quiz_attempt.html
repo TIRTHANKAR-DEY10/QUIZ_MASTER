@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Attempt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('user_dashboard') }}">Quiz Master</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_dashboard') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('quiz_scores') }}">Scores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_search') }}">Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_summary') }}">Summary</a></li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Quiz: {{ quiz.title }}</h2>
+        <p>Time Left: <span id="timer" data-duration="{{ quiz.time_duration * 60 }}">{{ quiz.time_duration * 60 }}</span> seconds</p>
+        <form action="{{ url_for('submit_quiz', quiz_id=quiz.id) }}" method="POST">
+            {% for question in quiz.questions %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Question {{ loop.index }}: {{ question.question_text }}</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="option_a_{{ question.id }}" value="A">
+                        <label class="form-check-label" for="option_a_{{ question.id }}">A {{ question.option_a }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="option_b_{{ question.id }}" value="B">
+                        <label class="form-check-label" for="option_b_{{ question.id }}">B {{ question.option_b }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="option_c_{{ question.id }}" value="C">
+                        <label class="form-check-label" for="option_c_{{ question.id }}">C {{ question.option_c }}</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="option_d_{{ question.id }}" value="D">
+                        <label class="form-check-label" for="option_d_{{ question.id }}">D {{ question.option_d }}</label>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit Quiz</button>
+        </form>
+    </div>
+
+    <script>
+        let timeLeft = parseInt(document.getElementById('timer').getAttribute('data-duration'));
+        const timerElement = document.getElementById('timer');
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert('Time is up!');
+                document.querySelector('form').submit();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Master - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='image.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            color: white;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+        .hero-section {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .hero-text {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+        .btn-custom {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+        }
+        .navbar, .footer {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            position: relative;
+            z-index: 1;
+        }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"> Quiz Master
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_login') }}">Admin Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_login') }}">User Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <h1 class="hero-title">Welcome to Quiz Master</h1>
+        <p class="hero-text">Enhance your learning with interactive quizzes. Compete, learn, and track your progress.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-custom">Get Started</a>
+            <a href="{{ url_for('user_login') }}" class="btn btn-outline-light btn-custom">Login</a>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 footer text-light">
+        <small>&copy; 2025 Quiz Master. All rights reserved.</small>
+    </footer>
+
+</body>
+</html>

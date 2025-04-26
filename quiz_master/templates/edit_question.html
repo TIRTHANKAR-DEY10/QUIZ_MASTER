@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Question</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navigation Bar (consistent with manage_quizzes.html) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">Quiz Master</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('manage_subjects') }}">Subjects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('manage_quizzes') }}">Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_summary') }}">Summary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_search') }}">Search</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Edit Question</h2>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mb-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('edit_question', id=question.id) }}" method="POST">
+            <div class="mb-3">
+                <label for="question_text" class="form-label">Question Text</label>
+                <textarea class="form-control" id="question_text" name="question_text" rows="3" required>{{ question.question_text }}</textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="option_a" class="form-label">Option A</label>
+                    <input type="text" class="form-control" id="option_a" name="option_a" value="{{ question.option_a }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="option_b" class="form-label">Option B</label>
+                    <input type="text" class="form-control" id="option_b" name="option_b" value="{{ question.option_b }}" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="option_c" class="form-label">Option C</label>
+                    <input type="text" class="form-control" id="option_c" name="option_c" value="{{ question.option_c }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="option_d" class="form-label">Option D</label>
+                    <input type="text" class="form-control" id="option_d" name="option_d" value="{{ question.option_d }}" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="correct_answer" class="form-label">Correct Answer</label>
+                    <select class="form-select" id="correct_answer" name="correct_answer" required>
+                        <option value="A" {% if question.correct_answer == 'A' %}selected{% endif %}>A</option>
+                        <option value="B" {% if question.correct_answer == 'B' %}selected{% endif %}>B</option>
+                        <option value="C" {% if question.correct_answer == 'C' %}selected{% endif %}>C</option>
+                        <option value="D" {% if question.correct_answer == 'D' %}selected{% endif %}>D</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="quiz_id" class="form-label">Quiz</label>
+                    <select class="form-select" id="quiz_id" name="quiz_id" required>
+                        {% for quiz in quizzes %}
+                        <option value="{{ quiz.id }}" {% if quiz.id == question.quiz_id %}selected{% endif %}>
+                            {{ quiz.title }} ({{ quiz.chapter.name }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary me-md-2">Update Question</button>
+                <a href="{{ url_for('manage_quizzes') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
